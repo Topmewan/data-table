@@ -1,7 +1,7 @@
 import {Box, Typography} from "@mui/material";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import {PropTypes} from "prop-types";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export const CopyToClipboardText = ({text}) => {
 
@@ -35,7 +35,7 @@ export const CopyToClipboardText = ({text}) => {
       top:'100%',
       left:'20px',
       visibility:'hidden',
-      transition: 'visibility .2s ease'
+      transition: 'visibility 2s ease'
     },
     popupVisible:{
       background:'black',
@@ -46,7 +46,9 @@ export const CopyToClipboardText = ({text}) => {
       position: 'absolute',
       top:'100%',
       left:'20px',
-      visibility: 'visible'
+      visibility: 'visible',
+      transition: 'visibility 2s ease'
+
     }
 
   }
@@ -56,17 +58,22 @@ export const CopyToClipboardText = ({text}) => {
     setIsOpen(prev => !prev);
   }
 
+  const myRef = useRef(null);
   useEffect(() => {
-    if(isOpen){
-      window.addEventListener('click',handleOpen)
+
+    const elem = myRef.current;
+    if(isOpen && elem){
+      elem.addEventListener('mouseleave',handleOpen)
     }
+
     return () => {
-      window.removeEventListener('click',handleOpen)
+      elem.removeEventListener('mouseleave',handleOpen)
     }
-  })
+
+  },)
 
   return (
-    <Box sx={classes.boxClass}>
+    <Box sx={classes.boxClass} ref={myRef}>
       <ContentCopyRoundedIcon sx={classes.iconClass} fontSize='small' onClick={handleOpen}/>
       <Box sx={isOpen ? classes.popupVisible : classes.popupDefault}>Скопировано!</Box>
       <Typography variant="subtitle2">
