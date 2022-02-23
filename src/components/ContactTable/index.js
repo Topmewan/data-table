@@ -10,6 +10,7 @@ import {
   TableRow
 } from "@mui/material";
 import {format} from "date-fns";
+import {CopyToClipboardText} from "../CopyToClipboardText";
 
 
 export const ContactTable = ({data}) => {
@@ -49,7 +50,9 @@ export const ContactTable = ({data}) => {
                 </Typography>
                 <Typography>{user.dob.age} years</Typography>
               </TableCell>
-              <TableCell align='left'>{user.email}</TableCell>
+              <TableCell align='left'>
+                <CopyToClipboardText text={user.email}/>
+              </TableCell>
               <TableCell align='left'>{user.phone}</TableCell>
               <TableCell align='left'>{user.location.city}</TableCell>
               <TableCell align='left'>{user.nat}</TableCell>
