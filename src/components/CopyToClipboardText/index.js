@@ -35,7 +35,7 @@ export const CopyToClipboardText = ({text}) => {
       top:'100%',
       left:'20px',
       visibility:'hidden',
-      transition: 'visibility .3s ease'
+      transition: 'visibility .2s ease'
     },
     popupVisible:{
       background:'black',
