@@ -5,7 +5,7 @@ import {Container, createTheme, ThemeProvider, Typography} from "@mui/material";
 import {ContactTable} from "../../components/ContactTable";
 
 export const Contacts = () => {
-  const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=200');
+  const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=10');
 
   const theme = createTheme({
     spacing: 8
@@ -13,7 +13,8 @@ export const Contacts = () => {
 
   const classes = {
     containerStyles: {
-      marginTop: theme.spacing(4)
+      marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(4),
     },
     headContainer: {
       marginBottom: theme.spacing(3)

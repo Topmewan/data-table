@@ -2,12 +2,12 @@ import {Box, Typography} from "@mui/material";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import {PropTypes} from "prop-types";
 import {useEffect, useRef, useState} from "react";
+import {useCopyToClipboard} from "react-use";
 
 export const CopyToClipboardText = ({text}) => {
 
   const classes = {
     boxClass:{
-      maxWidth:'100%',
       display:'flex',
       alignItems:'center',
       flexDirection:'row',
@@ -54,7 +54,11 @@ export const CopyToClipboardText = ({text}) => {
   }
 
   const [isOpen,setIsOpen] = useState(false);
+  const [value, setValue] = useState(text);
+  const [state, copyToClipboard] = useCopyToClipboard();
+
   const handleOpen = () => {
+    copyToClipboard(value);
     setIsOpen(prev => !prev);
   }
 
@@ -76,8 +80,8 @@ export const CopyToClipboardText = ({text}) => {
     <Box sx={classes.boxClass} ref={myRef}>
       <ContentCopyRoundedIcon sx={classes.iconClass} fontSize='small' onClick={handleOpen}/>
       <Box sx={isOpen ? classes.popupVisible : classes.popupDefault}>Скопировано!</Box>
-      <Typography variant="subtitle2">
-        {text}
+      <Typography variant="subtitle2" value>
+        {value}
       </Typography>
     </Box>
   );
