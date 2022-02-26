@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import {format} from "date-fns";
 import {CopyToClipboardText} from "../CopyToClipboardText";
+import {NATIONALITIES_HUMAN_NAME} from "../../constants/nationals";
 
 
 export const ContactTable = ({data}) => {
@@ -57,7 +58,7 @@ export const ContactTable = ({data}) => {
                 <CopyToClipboardText text={user.phone}/>
               </TableCell>
               <TableCell align='left'>{user.location.city}</TableCell>
-              <TableCell align='left'>{user.nat}</TableCell>
+              <TableCell align='left'>{NATIONALITIES_HUMAN_NAME[user.nat]}</TableCell>
             </TableRow>
           ))}
         </TableBody>
