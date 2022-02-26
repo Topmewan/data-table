@@ -1,93 +1,93 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, IconButton, Tooltip} from "@mui/material";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import {PropTypes} from "prop-types";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useCopyToClipboard} from "react-use";
 
 export const CopyToClipboardText = ({text}) => {
 
   const classes = {
-    boxClass:{
-      display:'flex',
-      alignItems:'center',
-      flexDirection:'row',
-      color:'primary.main',
-      position:'relative',
-  },
-    typoClass:{
+    boxClass: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      color: 'primary.main',
+      position: 'relative',
     },
-    iconClass:{
-      cursor:'pointer',
-      marginRight:'10px',
-      transition:' .3s ease',
-      border:'none',
-      '&:active':{
+    typoClass: {},
+    iconClass: {
+      cursor: 'pointer',
+      marginRight: '10px',
+      transition: ' .3s ease',
+      border: 'none',
+      color: 'primary.main',
+      '&:active': {
         color: 'blue'
       },
     },
-    popupDefault:{
-      background:'black',
-      color:'white',
-      minWidth:'100px',
-      borderRadius:'5px',
-      p:1,
+    popupDefault: {
+      background: 'black',
+      color: 'white',
+      minWidth: '100px',
+      borderRadius: '5px',
+      p: 1,
       position: 'absolute',
-      top:'100%',
-      left:'20px',
-      visibility:'hidden',
+      top: '100%',
+      left: '20px',
+      visibility: 'hidden',
       transition: 'visibility 2s ease'
     },
-    popupVisible:{
-      background:'black',
-      color:'white',
-      minWidth:'100px',
-      borderRadius:'5px',
-      p:1,
+    popupVisible: {
+      background: 'black',
+      color: 'white',
+      minWidth: '100px',
+      borderRadius: '5px',
+      p: 1,
       position: 'absolute',
-      top:'100%',
-      left:'20px',
+      top: '100%',
+      left: '20px',
       visibility: 'visible',
       transition: 'visibility 2s ease'
-
     }
-
   }
 
-  const [isOpen,setIsOpen] = useState(false);
-  const [value, setValue] = useState(text);
+  const [isOpen, setIsOpen] = useState(false);
   const [state, copyToClipboard] = useCopyToClipboard();
 
-  const handleOpen = () => {
-    copyToClipboard(value);
+  const handleOpen = useCallback(() => {
+    copyToClipboard(text);
     setIsOpen(prev => !prev);
-  }
+  },[text,copyToClipboard])
 
-  const myRef = useRef(null);
-  useEffect(() => {
-
-    const elem = myRef.current;
-    if(isOpen && elem){
-      elem.addEventListener('mouseleave',handleOpen)
-    }
-
-    return () => {
-      elem.removeEventListener('mouseleave',handleOpen)
-    }
-
-  },)
 
   return (
-    <Box sx={classes.boxClass} ref={myRef}>
-      <ContentCopyRoundedIcon sx={classes.iconClass} fontSize='small' onClick={handleOpen}/>
-      <Box sx={isOpen ? classes.popupVisible : classes.popupDefault}>Скопировано!</Box>
-      <Typography variant="subtitle2" value>
-        {value}
+    <Box sx={classes.boxClass} onMouseLeave={() => setIsOpen(false)}>
+      <Tooltip title='Копировать' placement="top">
+        <IconButton
+          sx={classes.iconClass}
+          fontSize='small'
+          onClick={handleOpen}
+        >
+          <ContentCopyRoundedIcon/>
+        </IconButton>
+      </Tooltip>
+      <Box
+        sx={
+          isOpen
+            ? classes.popupVisible
+            : classes.popupDefault
+        }
+      >
+        Скопировано!
+      </Box>
+      <Typography variant="subtitle2">
+        {text}
       </Typography>
     </Box>
   );
 };
 
 CopyToClipboardText.propTypes = {
-  text:PropTypes.string.isRequired
+  text: PropTypes.string.isRequired
 }
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import useContacts from "../../hooks/useContacts";
 import Grid from '@mui/material/Grid';
-import {Container, createTheme, ThemeProvider, Typography} from "@mui/material";
+import {Container, createTheme, Paper, ThemeProvider, Typography} from "@mui/material";
 import {ContactTable} from "../../components/ContactTable";
+import {Form} from "../../components/Form";
 
 export const Contacts = () => {
   const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=10');
@@ -18,8 +19,10 @@ export const Contacts = () => {
     },
     headContainer: {
       marginBottom: theme.spacing(3)
-    }
+    },
   }
+
+
 
   const dataOrNot = () => {
     if (isLoading) {
@@ -40,6 +43,7 @@ export const Contacts = () => {
             <Typography variant='h3' component='h3'>
               Contacts
             </Typography>
+            <Form/>
           </Grid>
           <Grid item xs={12}>
             {dataOrNot()}

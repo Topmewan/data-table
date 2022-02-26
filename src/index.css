@@ -16,6 +16,10 @@ body {
   sans-serif;
 }
 
+body{
+  height: 100%;
+}
+
 ul{
   list-style: none;
 }

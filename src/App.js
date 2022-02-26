@@ -3,7 +3,7 @@ import {Contacts} from "./pages/Contacts";
 
 function App() {
   return (
-    <div>
+    <div className='wrapper'>
       <Contacts/>
     </div>
   );
