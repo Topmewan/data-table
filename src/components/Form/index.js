@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from 'react';
 import {FormControl, InputLabel, MenuItem, Paper, Select, TextField} from "@mui/material";
 
 const classes = {
@@ -7,23 +6,23 @@ const classes = {
     padding: '20px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '20px'
+    justifyContent: 'center',
+    gap: '20px',
+    flexWrap: 'wrap'
   },
   inputClass: {
-    width: '30%',
-
-
+    minWidth: '40%',
   },
-  selectClass: {}
+  selectClass: {
+    minWidth: '180px'
+  }
 }
 
-export const Form = ({formValues,setFormValues}) => {
+export const Form = ({onChange,formValues}) => {
 
   const handleChange = (e) => {
-    setFormValues((prev) => ({...prev, [e.target.name]: e.target.value}));
+    onChange(e.target.name,e.target.value)
   }
-
 
   return (
     <Paper sx={classes.paperClass} component='form'>
@@ -35,7 +34,43 @@ export const Form = ({formValues,setFormValues}) => {
         onChange={handleChange}
         name='fullName'
       />
+      <FormControl sx={classes.selectClass}>
+        <InputLabel id="gender">Gender</InputLabel>
+        <Select
+          labelId="gender"
+          value={formValues.gender}
+          onChange={handleChange}
+          label="Gender"
+          size='small'
+          name='gender'
+        >
+          <MenuItem value="all">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value='male'>Male</MenuItem>
+          <MenuItem value='female'>Female</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={classes.selectClass}>
+        <InputLabel id="gender">Gender</InputLabel>
+        <Select
+          labelId="gender"
+          value={formValues.nation}
+          onChange={handleChange}
+          label="Nation"
+          size='small'
+          name='nation'
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          {}
+          <MenuItem value='male'>Male</MenuItem>
+          <MenuItem value='female'>Female</MenuItem>
+        </Select>
+      </FormControl>
     </Paper>
+
   );
 };
 

@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import useContacts from "../../hooks/useContacts";
 import Grid from '@mui/material/Grid';
-import {Container, createTheme, Paper, ThemeProvider, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
 import {ContactTable} from "../../components/ContactTable";
 import {Form} from "../../components/Form";
 import {Loader} from '../../components/Loader/index';
@@ -17,13 +17,20 @@ const classes = {
 }
 
 const defaultValue = {
-  fullName: ''
+  fullName: '',
+  gender: 'all',
+  nation: ''
 }
 
-const filterByName = ({first, last}, fullname) => {
-  return first?.toLowerCase().includes(fullname.toLowerCase()) ||
-    last?.toLowerCase().includes(fullname.toLowerCase())
+const filterByName = ({first, last}, fullName) => {
+  return first?.toLowerCase().includes(fullName.toLowerCase()) ||
+    last?.toLowerCase().includes(fullName.toLowerCase())
 }
+
+const filterByGender = (gender, selectGender) => {
+  if (selectGender === 'all') return true;
+  return gender === selectGender
+};
 
 export const Contacts = () => {
 
@@ -31,7 +38,14 @@ export const Contacts = () => {
 
   const [formValues, setFormValues] = useState(defaultValue);
 
-  const newArr = users.filter((elem) => filterByName(elem.name, formValues.fullName));
+  const filteredUsers = users
+    .filter((user) => filterByName(user.name, formValues.fullName))
+    .filter((user) => filterByGender(user.gender, formValues.gender));
+
+
+  const handleChangeForm = (name, value) => {
+    setFormValues((prev) => ({...prev, [name]: value}));
+  }
 
   const dataOrNot = () => {
     if (isLoading) {
@@ -40,7 +54,7 @@ export const Contacts = () => {
     if (isError) {
       return <h1>Error</h1>
     }
-    return <ContactTable data={newArr}/>
+    return <ContactTable data={filteredUsers}/>
   }
 
   return (
@@ -52,7 +66,7 @@ export const Contacts = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Form setFormValues={setFormValues} formValues={formValues}/>
+          <Form onChange={handleChangeForm} formValues={formValues}/>
         </Grid>
         <Grid item xs={12}>
           {dataOrNot()}
