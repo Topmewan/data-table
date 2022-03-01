@@ -15,7 +15,6 @@ import {NATIONALITIES_HUMAN_NAME} from "../../constants/nationals";
 
 
 export const ContactTable = ({data}) => {
-  console.log(data)
 
   return (
     <TableContainer component={Paper}>

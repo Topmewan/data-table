@@ -6,25 +6,32 @@ import {ContactTable} from "../../components/ContactTable";
 import {Form} from "../../components/Form";
 import {Loader} from '../../components/Loader/index';
 
-
-const theme = createTheme({
-  spacing: 8
-});
-
 const classes = {
   containerStyles: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginTop: '30px',
+    marginBottom: '30px',
   },
   headContainer: {
-    marginBottom: theme.spacing(3)
+    marginBottom: '24px'
   },
+}
+
+const defaultValue = {
+  fullName: ''
+}
+
+const filterByName = ({first, last}, fullname) => {
+  return first?.toLowerCase().includes(fullname.toLowerCase()) ||
+    last?.toLowerCase().includes(fullname.toLowerCase())
 }
 
 export const Contacts = () => {
 
   const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=10');
 
+  const [formValues, setFormValues] = useState(defaultValue);
+
+  const newArr = users.filter((elem) => filterByName(elem.name, formValues.fullName));
 
   const dataOrNot = () => {
     if (isLoading) {
@@ -33,26 +40,25 @@ export const Contacts = () => {
     if (isError) {
       return <h1>Error</h1>
     }
-    return <ContactTable data={users}/>
+    return <ContactTable data={newArr}/>
   }
 
-
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth='xl' sx={classes.containerStyles}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sx={classes.headContainer}>
-            <Typography variant='h3' component='h3'>
-              Contacts
-            </Typography>
-            <Form/>
-          </Grid>
-          <Grid item xs={12}>
-            {dataOrNot()}
-          </Grid>
+    <Container maxWidth='xl' sx={classes.containerStyles}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sx={classes.headContainer}>
+          <Typography variant='h3' component='h3'>
+            Contacts
+          </Typography>
         </Grid>
-      </Container>
-    </ThemeProvider>
+        <Grid item xs={12}>
+          <Form setFormValues={setFormValues} formValues={formValues}/>
+        </Grid>
+        <Grid item xs={12}>
+          {dataOrNot()}
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

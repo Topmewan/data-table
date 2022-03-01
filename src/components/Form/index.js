@@ -11,29 +11,30 @@ const classes = {
     gap: '20px'
   },
   inputClass: {
-    width: '70%'
+    width: '30%',
+
 
   },
   selectClass: {}
 }
-export const Form = () => {
 
-  const [searchTerm,setSearchTerm] = useState('');
-  const [selectValue,setSelectValue] = useState('');
+export const Form = ({formValues,setFormValues}) => {
+
+  const handleChange = (e) => {
+    setFormValues((prev) => ({...prev, [e.target.name]: e.target.value}));
+  }
 
 
   return (
     <Paper sx={classes.paperClass} component='form'>
       <TextField
-        label="Outlined"
+        label="Name"
+        size='small'
         sx={classes.inputClass}
-        value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
-        />
-      <select value={selectValue} onChange={e => setSelectValue(e.target.value)}>
-        <option disabled>Nationality</option>
-
-      </select>
+        value={formValues.fullName}
+        onChange={handleChange}
+        name='fullName'
+      />
     </Paper>
   );
 };
