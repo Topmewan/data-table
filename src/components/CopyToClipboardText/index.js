@@ -1,7 +1,8 @@
+import PropTypes from "prop-types";
+
 import {Box, Typography, IconButton, Tooltip} from "@mui/material";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import {PropTypes} from "prop-types";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useState} from "react";
 import {useCopyToClipboard} from "react-use";
 
 const classes = {
@@ -57,7 +58,7 @@ const OPEN_STATUS = {
 export const CopyToClipboardText = ({text}) => {
 
   const [isOpen, setIsOpen] = useState(OPEN_STATUS.CLOSE);
-  const [state, copyToClipboard] = useCopyToClipboard();
+  const [, copyToClipboard] = useCopyToClipboard();
 
   const getOpenStatus = () => {
     switch (isOpen){

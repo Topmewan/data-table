@@ -5,6 +5,7 @@ import {Container, Typography} from "@mui/material";
 import {ContactTable} from "../../components/ContactTable";
 import {Form} from "../../components/Form";
 import {Loader} from '../../components/Loader/index';
+import {NATIONALITIES_HUMAN_NAME} from "../../constants/nationals";
 
 const classes = {
   containerStyles: {
@@ -19,7 +20,7 @@ const classes = {
 const defaultValue = {
   fullName: '',
   gender: 'all',
-  nation: ''
+  nationality: 'all'
 }
 
 const filterByName = ({first, last}, fullName) => {
@@ -32,19 +33,30 @@ const filterByGender = (gender, selectGender) => {
   return gender === selectGender
 };
 
+const filterByNation = (nationality, filterNationality) => {
+  if (filterNationality === 'all') return true;
+  return NATIONALITIES_HUMAN_NAME[nationality] === filterNationality
+}
+
+
 export const Contacts = () => {
 
-  const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=10');
+  const {data: users, isLoading, isError} = useContacts('https://randomuser.me/api/?results=200');
 
   const [formValues, setFormValues] = useState(defaultValue);
 
   const filteredUsers = users
     .filter((user) => filterByName(user.name, formValues.fullName))
-    .filter((user) => filterByGender(user.gender, formValues.gender));
-
+    .filter((user) => filterByGender(user.gender, formValues.gender))
+    .filter((user) => filterByNation(user.nat, formValues.nationality));
 
   const handleChangeForm = (name, value) => {
     setFormValues((prev) => ({...prev, [name]: value}));
+  }
+
+
+  const resetFilters = () => {
+    setFormValues(defaultValue)
   }
 
   const dataOrNot = () => {
@@ -66,7 +78,12 @@ export const Contacts = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Form onChange={handleChangeForm} formValues={formValues}/>
+          <Form
+            onChange={handleChangeForm}
+            formValues={formValues}
+            reset={resetFilters}
+            isLoading={isLoading}
+          />
         </Grid>
         <Grid item xs={12}>
           {dataOrNot()}

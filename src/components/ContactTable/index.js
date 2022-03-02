@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   Typography,
   Avatar,
@@ -70,4 +71,6 @@ export const ContactTable = ({data}) => {
   );
 };
 
-export default ContactTable;
+ContactTable.propTypes = {
+  data:PropTypes.array
+}
